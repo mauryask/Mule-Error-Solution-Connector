@@ -11,6 +11,10 @@ public class ErrorSolutionConfiguration
   @OfValues(SourceProvider.class)
   private String source;
   
+  @Parameter
+  @OfValues(SearchEngineProvider.class)
+  private String searchEngine;
+  
   public String getSource()
   {
 	  return source;
@@ -19,5 +23,15 @@ public class ErrorSolutionConfiguration
   public void setSource(String source)
   {
 	  this.source = source;
+  }
+  
+  public String getSearchEngine()
+  {
+	  return searchEngine;
+  }
+  
+  public void setSearchEngine(String searchEngine)
+  {
+	  this.searchEngine = searchEngine;
   }
 }

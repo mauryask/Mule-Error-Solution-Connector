@@ -1,7 +1,11 @@
 package com.apisero.driver;
 
-import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import org.json.JSONObject;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.MediaType;
@@ -16,32 +20,30 @@ public class ErrorSolutionOperations
    private static final Logger LOGGER = 
 		   LoggerFactory.getLogger(ErrorSolutionConfiguration.class);
    
-   @MediaType(value = ANY, strict= false)
+   @MediaType("application/json")
    @Alias("Solution")
-   public String getSolution(@Config ErrorSolutionConfiguration config,
+   public InputStream getSolution(@Config ErrorSolutionConfiguration config,
 		   @ParameterGroup(name="Error") InputParams params) throws IOException
    {
 	    LOGGER.info("Solution extraction started...");
 	    
-	    String solution = "";
+	    JSONObject solution =  null;
 	    String error = params.getError().trim();
 	    String source = config.getSource().trim();
+	    String searchEngine = config.getSearchEngine().trim();
 	    
-	    switch(source)
-	    {
-	       case "Stack Overflow":
-	    	   solution = Solution.extract(error, "stackoverflow.com");
-	    	   break;
-	       case "Mulesoft Help":
-	    	   solution = "Source: "+source+" is not supported";
-	    	   break;
-	       default:
-	    	   solution = "Source: "+source+" is not supported";
-	    	   break;	    	   
-	    }
-	    
+	    if(source.equals("Mulesoft Help"))
+	    	return new ByteArrayInputStream
+					  ((new JSONObject()
+							  .put("message", "Source: "+source+" is not yet supported"))
+							  .toString()
+							  .getBytes());	    
+	    else
+	    	solution = Solution.extract(error,/*source*/ "stackoverflow.com", searchEngine);
+	   	    
 	    LOGGER.info("Solution extraction completed...");
 	    
-	    return solution;
+	    return new ByteArrayInputStream
+				  (solution.toString().getBytes());
    }
 }
