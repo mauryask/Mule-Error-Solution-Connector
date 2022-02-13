@@ -13,7 +13,7 @@ import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.apisero.processor.Solution;
+import com.apisero.service.Solution;
 
 public class ErrorSolutionOperations 
 {

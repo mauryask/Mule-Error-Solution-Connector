@@ -1,4 +1,4 @@
-package com.apisero.processor;
+package com.apisero.service;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
